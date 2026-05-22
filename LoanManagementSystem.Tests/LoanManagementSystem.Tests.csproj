@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoanManagementSystem.Application\LoanManagementSystem.Application.csproj" />
+    <ProjectReference Include="..\LoanManagementSystem.Domain\LoanManagementSystem.Domain.csproj" />
+    <ProjectReference Include="..\LoanManagementSystem.Infrastructure\LoanManagementSystem.Infrastructure.csproj" />
+    <ProjectReference Include="..\LoanManagementSystem.Persistence\LoanManagementSystem.Persistence.csproj" />
+    <ProjectReference Include="..\LoanManagementSystem.Shared\LoanManagementSystem.Shared.csproj" />
+    <ProjectReference Include="..\LoanManagementSystem\LoanManagementSystem.API.csproj" />
+  </ItemGroup>
+
+</Project>
