@@ -1,11 +1,27 @@
+using LoanManagementSystem.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+Serilog.Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
+builder.Host.UseSerilog();
+
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 
