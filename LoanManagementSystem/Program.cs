@@ -1,3 +1,4 @@
+using LoanManagementSystem.API.Extensions;
 using LoanManagementSystem.Application.Interfaces;
 using LoanManagementSystem.Application.Repositories;
 using LoanManagementSystem.Infrastructure.Authentication;
@@ -74,6 +75,10 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwaggerUI();
 }
+
+app.UseGlobalExceptionMiddleware(); 
+
+app.UseRequestLoggingMiddleware();
 
 app.UseHttpsRedirection();
 
