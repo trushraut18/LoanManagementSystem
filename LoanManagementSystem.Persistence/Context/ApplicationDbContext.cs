@@ -18,6 +18,7 @@ namespace LoanManagementSystem.Persistence.Context
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Loan> Loans => Set<Loan>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +56,17 @@ namespace LoanManagementSystem.Persistence.Context
 
                 entity.Property(x => x.InterestRate).HasColumnType("decimal(18,2)"); 
                 entity.HasIndex(x => x.UserId);
+
+                entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
+            });
+
+            //Refresh Token
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+
+                entity.HasIndex(x => x.Token).IsUnique();
 
                 entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
             });
