@@ -16,7 +16,7 @@ namespace LoanManagementSystem.API.Controllers
             _context = context;
         }
   
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateLoan(CreateLoanDto request)
         {
