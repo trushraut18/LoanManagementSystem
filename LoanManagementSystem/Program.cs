@@ -25,8 +25,12 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+builder.Services
+    .AddFluentValidationAutoValidation();
+
+builder.Services
+    .AddValidatorsFromAssemblyContaining
+        <RegisterRequestValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 
