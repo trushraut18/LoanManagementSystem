@@ -2,6 +2,8 @@
 using LoanManagementSystem.Application.Interfaces;
 using LoanManagementSystem.Application.Repositories;
 using LoanManagementSystem.Domain.Entities;
+using LoanManagementSystem.Infrastructure.Authentication;
+using LoanManagementSystem.Persistence.Context;
 using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,12 @@ namespace LoanManagementSystem.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public AuthService(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator)
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        public AuthService(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator, IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
             _jwtTokenGenerator = jwtTokenGenerator;
-
+            _refreshTokenRepository = refreshTokenRepository;
         }
         public async Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
         {
@@ -38,10 +41,23 @@ namespace LoanManagementSystem.Infrastructure.Services
             }
 
             var token = _jwtTokenGenerator.GenerateToken(user);
+            var refreshToken = RefreshTokenGenerator.GenerateRefreshToken();
+
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = refreshToken,
+                ExpiryDate = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false,
+                UserId = user.Id,
+                CreatedDate = DateTime.UtcNow
+            };
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
 
             return new AuthResponseDto
             {
                 Token = token,
+                RefreshToken = refreshToken,
                 Email = user.Email,
                 Role = user.Role
             };
@@ -71,9 +87,23 @@ namespace LoanManagementSystem.Infrastructure.Services
 
             var token = _jwtTokenGenerator.GenerateToken(user);
 
+            var refreshToken = RefreshTokenGenerator.GenerateRefreshToken();
+     
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = refreshToken,
+                ExpiryDate = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false,
+                UserId = user.Id,
+                CreatedDate = DateTime.UtcNow
+            };
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
+
             return new AuthResponseDto
             {
                 Token = token,
+                RefreshToken = refreshToken,
                 Email = user.Email,
                 Role = user.Role
             };

@@ -73,6 +73,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
+builder.Services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
+
 var secret =
     builder.Configuration["JwtSettings:Secret"];
 

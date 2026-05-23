@@ -9,7 +9,7 @@ namespace LoanManagementSystem.Infrastructure.Authentication
 {
     public static class RefreshTokenGenerator
     {
-        public static string Generate()
+        public static string GenerateRefreshToken()
         {
             var randomBytes = new byte[64];
             
