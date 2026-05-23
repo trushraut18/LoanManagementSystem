@@ -21,7 +21,6 @@
     <Folder Include="Features\" />
     <Folder Include="Mappings\" />
     <Folder Include="Behaviours\" />
-    <Folder Include="Validators\" />
   </ItemGroup>
 
 </Project>

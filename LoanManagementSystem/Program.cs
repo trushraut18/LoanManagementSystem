@@ -1,6 +1,9 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using LoanManagementSystem.API.Extensions;
 using LoanManagementSystem.Application.Interfaces;
 using LoanManagementSystem.Application.Repositories;
+using LoanManagementSystem.Application.Validators;
 using LoanManagementSystem.Infrastructure.Authentication;
 using LoanManagementSystem.Infrastructure.Services;
 using LoanManagementSystem.Persistence.Context;
@@ -21,6 +24,9 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 
