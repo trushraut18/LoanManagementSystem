@@ -17,11 +17,12 @@ namespace LoanManagementSystem.Persistence.Context
         }
 
         public DbSet<User> Users => Set<User>();
+        public DbSet<Loan> Loans => Set<Loan>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            //User 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -45,6 +46,18 @@ namespace LoanManagementSystem.Persistence.Context
                     Role = UserRole.Admin.ToString(),
                     CreatedDate = DateTime.UtcNow
                 });
+
+            //Loan
+            modelBuilder.Entity<Loan>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+
+                entity.Property(x => x.InterestRate).HasColumnType("decimal(18,2)"); 
+                entity.HasIndex(x => x.UserId);
+
+                entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
+            });
         }
     }
 }
