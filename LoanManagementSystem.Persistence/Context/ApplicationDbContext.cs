@@ -60,6 +60,13 @@ namespace LoanManagementSystem.Persistence.Context
                 entity.HasIndex(x => x.UserId);
 
                 entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
+
+                //composite index + covered index
+                entity.HasIndex(x => new { x.UserId, x.Status }).IncludeProperties(x => new
+                {
+                    x.Amount,
+                    x.InterestRate
+                });
             });
 
             //Seed Loan Data
