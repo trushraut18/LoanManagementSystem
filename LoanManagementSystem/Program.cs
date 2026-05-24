@@ -13,7 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,12 @@ builder.Services
 builder.Services
     .AddValidatorsFromAssemblyContaining
         <RegisterRequestValidator>();
+
+//Scans Application assembly and registers:command handlers query handlers automatically.
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Assembly.Load("LoanManagementSystem.Application"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 

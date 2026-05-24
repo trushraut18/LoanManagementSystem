@@ -11,9 +11,10 @@ namespace LoanManagementSystem.Domain.Entities
         public decimal Amount { get; set; }
         public int DurationInMonths { get; set; }
         public decimal InterestRate { get; set; }
-        public string Status { get; set; } = string.Empty;
+        public string Status { get; set; } = Enums.LoanStatus.Pending.ToString();
         public int UserId { get; set; }
         public User User { get; set; } = null;
+        public ICollection<LoanPayment> Payments { get; set; } = new List<LoanPayment>();
 
     }
 }

@@ -19,6 +19,7 @@ namespace LoanManagementSystem.Persistence.Context
         public DbSet<User> Users => Set<User>();
         public DbSet<Loan> Loans => Set<Loan>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<LoanPayment> LoansPayment => Set<LoanPayment>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,12 +53,25 @@ namespace LoanManagementSystem.Persistence.Context
             modelBuilder.Entity<Loan>(entity =>
             {
                 entity.HasKey(x => x.Id);
+ 
                 entity.Property(x => x.Amount).HasColumnType("decimal(18,2)");
-
                 entity.Property(x => x.InterestRate).HasColumnType("decimal(18,2)"); 
+                
                 entity.HasIndex(x => x.UserId);
 
                 entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
+            });
+
+            //Seed Loan Data
+            modelBuilder.Entity<Loan>().HasData(new Loan
+            {
+                Id = 1,
+                Amount = 50000,
+                DurationInMonths = 12,
+                InterestRate = 10,
+                Status = LoanStatus.Approved.ToString(),
+                UserId = 1,
+                CreatedDate = DateTime.UtcNow
             });
 
             //Refresh Token
@@ -65,11 +79,41 @@ namespace LoanManagementSystem.Persistence.Context
             modelBuilder.Entity<RefreshToken>(entity =>
             {
                 entity.HasKey(x => x.Id);
-
+                
                 entity.HasIndex(x => x.Token).IsUnique();
-
+                
                 entity.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
             });
+
+            //loan Payment
+
+            modelBuilder.Entity<LoanPayment>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                
+                entity.Property(x => x.AmountPaid).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TransactionReference).HasMaxLength(200);
+                entity.Property(x => x.PaymentMode).HasMaxLength(50);
+                
+                entity.HasIndex(x => x.LoanId);
+                entity.HasIndex(x => x.PaymentDate);
+
+                entity.HasOne(x => x.Loan).WithMany(x => x.Payments).HasForeignKey(x => x.LoanId);
+
+            });
+
+            modelBuilder.Entity<LoanPayment>().HasData(
+            new LoanPayment
+            {
+                Id = 1,
+                LoanId = 1,
+                AmountPaid = 5000,
+                PaymentDate = DateTime.UtcNow,
+                PaymentMode = "UPI",
+                TransactionReference = "TXN123456",
+                CreatedDate = DateTime.UtcNow
+            });
+                        
         }
     }
 }
