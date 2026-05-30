@@ -1,15 +1,21 @@
 <h2>Loans</h2>
 <table border="1">
+    <thead>
     <tr>
         <th>Amount</th>
-        <th>Status</th>
+        <th>InterestRate</th>
         <th>Duration</th>
+        <th>Status</th>
     </tr>
+    </thead>
+    <tbody>
     <tr *ngFor="let loan of loans" >
-        <td>{{loan.amount}}</td>
-        <td>{{loan.status}}</td>
-        <td>{{loan.durationInMonths}}</td>
+            <td>{{ loan.amount | number }}</td>
+            <td>{{ loan.durationInMonths }}</td>
+            <td>{{ loan.interestRate }}%</td>
+            <td>{{ loan.status }}</td>
     </tr>
+</tbody>
 </table>
 
 <p>Total Records: {{ loans.length }}</p>
