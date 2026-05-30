@@ -3,12 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { LoginRequest } from "../models/login-request.model";
 import { AuthResponse } from "../models/auth-response.model";
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-private apiUrl = 'https://localhost:7130/api/Auth';
+    private apiUrl =`${environment.apiBaseUrl}/Auth`;
 
     constructor( private http: HttpClient){}
 
@@ -29,6 +30,7 @@ login(request: LoginRequest)
     }
 
     logout(): void {
+        localStorage.removeItem('token');
         localStorage.clear();
     }
 

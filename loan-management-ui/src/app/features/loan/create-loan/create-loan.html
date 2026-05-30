@@ -1,0 +1,17 @@
+<h2>Create Loan</h2>
+<div>
+    <label>Amount</label>
+    <input type="number" [(ngModel)]="amount">
+</div>
+<br><br>
+<div>
+    <label>Duration In Months</label>
+    <input type="number" [(ngModel)]="durationInMonths">
+</div>
+<br><br>
+<div>
+    <label>Interest Rate</label>
+    <input type="number" [(ngModel)]="interestRate">
+</div>
+<br><br>
+<button (click)="createLoan()"> Create Loan</button>

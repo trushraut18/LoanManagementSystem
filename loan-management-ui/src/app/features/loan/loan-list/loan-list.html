@@ -1,0 +1,16 @@
+<h2>Loans</h2>
+<table border="1">
+    <tr>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Duration</th>
+    </tr>
+    <tr *ngFor="let loan of loans" >
+        <td>{{loan.amount}}</td>
+        <td>{{loan.status}}</td>
+        <td>{{loan.durationInMonths}}</td>
+    </tr>
+</table>
+
+<p>Total Records: {{ loans.length }}</p>
+
