@@ -25,6 +25,16 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 builder.Services.AddControllers();
 
 builder.Services
@@ -93,6 +103,7 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 builder.Services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
 
+
 var secret =
     builder.Configuration["JwtSettings:Secret"];
 
@@ -137,6 +148,8 @@ app.UseGlobalExceptionMiddleware();
 app.UseRequestLoggingMiddleware();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngular");
 
 app.UseAuthentication();
 
