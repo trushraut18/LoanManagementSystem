@@ -44,5 +44,36 @@ namespace LoanManagementSystem.API.Controllers
             var loans = _context.Loans.ToList();
             return Ok(loans);
         }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetLoanById(int id)
+        {
+            var loan = _context.Loans.FirstOrDefault(lo => lo.Id == id);
+            if(loan == null)
+            {
+                return NotFound();
+            }
+            return Ok(loan);
+        }
+
+        [Authorize]
+        [HttpPut("id")]
+        public async Task<IActionResult> UpdateLoan( int id, UpdateLoanRequestDto request )
+        {
+            var loan = await _context.Loans.FindAsync(id);
+            if (loan == null)
+            {
+                return NotFound();   
+            }
+
+            loan.Amount = request.Amount;
+            loan.DurationInMonths = request.DurationInMonths;
+            loan.InterestRate = request.InterestRate;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+        }
     }
 }
