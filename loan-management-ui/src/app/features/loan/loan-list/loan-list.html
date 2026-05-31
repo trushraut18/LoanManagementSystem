@@ -6,6 +6,7 @@
         <th>InterestRate</th>
         <th>Duration</th>
         <th>Status</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +15,14 @@
             <td>{{ loan.durationInMonths }}</td>
             <td>{{ loan.interestRate }}%</td>
             <td>{{ loan.status }}</td>
+            <td>
+                <button [routerLink]="['/edit-loan',loan.id]">
+                    Edit
+                </button>
+                <button (click) = "deleteLoan(loan.id)">
+                    Delete
+                </button>
+            </td>       
     </tr>
 </tbody>
 </table>

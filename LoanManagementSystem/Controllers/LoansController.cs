@@ -58,7 +58,7 @@ namespace LoanManagementSystem.API.Controllers
         }
 
         [Authorize]
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLoan(int id, UpdateLoanRequestDto request)
         {
             var loan = await _context.Loans.FindAsync(id);

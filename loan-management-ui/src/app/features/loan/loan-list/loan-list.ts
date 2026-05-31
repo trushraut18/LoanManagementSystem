@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { LoanService } from '../../../services/loan.service'; 
 import { Loan } from '../../../models/loan.model';
 import { ChangeDetectorRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-loan-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './loan-list.html',
   styleUrl: './loan-list.css',
 })
@@ -31,6 +32,26 @@ next: (response) =>
     this.cdr.detectChanges();
 
 },
+
+      error: (error) =>
+      {
+        console.error(error);
+      }
+    });
+  }
+
+  deleteLoan(id: number): void
+  {
+    if(!confirm("Are you sure ?"))
+    {
+      return;
+    }
+    this.loanService.deleteLoan(id).subscribe({
+      next: () =>
+      {
+        alert('Loan Deleted');
+        this.loadLoans();
+      },
 
       error: (error) =>
       {

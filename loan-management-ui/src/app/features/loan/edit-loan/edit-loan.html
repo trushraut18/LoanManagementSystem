@@ -1,0 +1,16 @@
+<h2>Edit Loan</h2>
+<div>
+    <label>Amount</label>
+    <input type="number" [(ngModel)]="amount">
+</div>
+<br>
+<div>
+    <label>Duration in Months</label>
+    <input type="number" [(ngModel)]="durationInMonths">
+</div>
+<br>
+<div>
+    <label>Interest Rate</label>
+    <input type="number" [(ngModel)]="interestRate">
+</div>
+<button (click)="updateLoan()">Update Loan</button>
