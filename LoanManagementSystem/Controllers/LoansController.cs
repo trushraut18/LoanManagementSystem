@@ -15,7 +15,7 @@ namespace LoanManagementSystem.API.Controllers
         {
             _context = context;
         }
-  
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateLoan(CreateLoanDto request)
@@ -33,10 +33,10 @@ namespace LoanManagementSystem.API.Controllers
             };
 
             await _context.Loans.AddAsync(loan);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
             return Ok("");
         }
- 
+
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public IActionResult GetAllLoans()
@@ -50,7 +50,7 @@ namespace LoanManagementSystem.API.Controllers
         public IActionResult GetLoanById(int id)
         {
             var loan = _context.Loans.FirstOrDefault(lo => lo.Id == id);
-            if(loan == null)
+            if (loan == null)
             {
                 return NotFound();
             }
@@ -59,12 +59,12 @@ namespace LoanManagementSystem.API.Controllers
 
         [Authorize]
         [HttpPut("id")]
-        public async Task<IActionResult> UpdateLoan( int id, UpdateLoanRequestDto request )
+        public async Task<IActionResult> UpdateLoan(int id, UpdateLoanRequestDto request)
         {
             var loan = await _context.Loans.FindAsync(id);
             if (loan == null)
             {
-                return NotFound();   
+                return NotFound();
             }
 
             loan.Amount = request.Amount;
@@ -74,6 +74,22 @@ namespace LoanManagementSystem.API.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
 
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteLoan(int id)
+        {
+            var loan = await _context.Loans.FindAsync(id);
+
+            if(loan == null)
+            {
+                return NotFound();
+            }
+
+            _context.Loans.Remove(loan);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
